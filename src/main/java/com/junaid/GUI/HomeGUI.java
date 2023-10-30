@@ -12,7 +12,7 @@ public class HomeGUI extends JFrame implements ActionListener {
     public HomeGUI() {
         super("Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 600);
+        setSize(1500, 800);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         addCustomerButton = new JButton("Add New Customer");
@@ -60,6 +60,8 @@ public class HomeGUI extends JFrame implements ActionListener {
             addBookGUI.setVisible(true);
             dispose();
         } else if (e.getSource() == placeOrderButton) {
+            PlaceOrderGUI placeOrderGUI = new PlaceOrderGUI();
+            placeOrderGUI.setVisible(true);
             dispose();
         } else if (e.getSource() == showOrdersButton) {
             dispose();

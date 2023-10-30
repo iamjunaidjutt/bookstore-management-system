@@ -28,7 +28,7 @@ public class AddBookGUI extends JFrame {
 
     public AddBookGUI() {
         setTitle("Add Book");
-        setSize(1000, 600);
+        setSize(1500, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(1, 2));
 

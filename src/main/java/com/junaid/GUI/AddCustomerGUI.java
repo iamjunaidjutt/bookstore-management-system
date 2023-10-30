@@ -25,7 +25,7 @@ public class AddCustomerGUI extends JFrame {
 
     public AddCustomerGUI() {
         setTitle("Add Customer");
-        setSize(1000, 600);
+        setSize(1500, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(1, 2));
 

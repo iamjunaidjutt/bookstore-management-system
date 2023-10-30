@@ -45,28 +45,44 @@ public class OrderDAO {
     public OrderDAO() {
     }
 
-    public boolean addOrder(int customerid, int bookid, int quantity, double totalprice, String orderstatus) {
+    public boolean addOrder(Order order) {
         try {
-            String sql = "INSERT INTO Order (customerid, bookid, quantity, totalprice, orderstatus) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement statement = con.prepareStatement(sql);
-            statement.setInt(1, customerid);
-            statement.setInt(2, bookid);
-            statement.setInt(3, quantity);
-            statement.setDouble(4, totalprice);
-            statement.setString(5, orderstatus);
+            String sqlQuery = "INSERT INTO Order (customerid, totalprice) VALUES (?, ?)";
+            PreparedStatement statement = con.prepareStatement(sqlQuery);
+            statement.setInt(1, order.getCustomerID());
+            statement.setDouble(2, order.getTotalPrice());
             int rowsInserted = statement.executeUpdate();
 
             if (rowsInserted > 0) {
-                System.out.println("A new user was inserted successfully!");
+                System.out.println("A new order was inserted successfully!");
             }
         } catch (SQLException e) {
-            System.out.println("Something went wrong when trying to add a new user: " + e.getMessage());
+            System.out.println("Something went wrong when trying to insert a new order: " + e.getMessage());
             return false;
         } catch (Exception e) {
-            System.out.println("Something went wrong when trying to add a new user: " + e.getMessage());
+            System.out.println("Something went wrong when trying to insert a new order: " + e.getMessage());
             return false;
         }
         return true;
+    }
+
+    public int getMaxOrderId() {
+        try {
+            String sql = "SELECT MAX(orderid) FROM Order";
+            PreparedStatement statement = con.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("orderid");
+            }
+        } catch (SQLException e) {
+            System.out.println("Something went wrong when trying to get max order id: " + e.getMessage());
+            return -1;
+        } catch (Exception e) {
+            System.out.println("Something went wrong when trying to get max order id: " + e.getMessage());
+            return -1;
+        }
+        return -1;
     }
 
     public boolean deleteOrder(int orderid) {
@@ -89,30 +105,6 @@ public class OrderDAO {
         return true;
     }
 
-    public boolean updateOrder(int orderid, int customerid, int bookid, int quantity, double totalprice) {
-        try {
-            String sql = "UPDATE Order SET customerid = ?, bookid = ?, quantity = ?, totalprice = ? WHERE orderid = ?";
-            PreparedStatement statement = con.prepareStatement(sql);
-            statement.setInt(1, customerid);
-            statement.setInt(2, bookid);
-            statement.setInt(3, quantity);
-            statement.setDouble(4, totalprice);
-            statement.setInt(5, orderid);
-            int rowsUpdated = statement.executeUpdate();
-
-            if (rowsUpdated > 0) {
-                System.out.println("An existing user was updated successfully!");
-            }
-        } catch (SQLException e) {
-            System.out.println("Something went wrong when trying to update a user: " + e.getMessage());
-            return false;
-        } catch (Exception e) {
-            System.out.println("Something went wrong when trying to update a user: " + e.getMessage());
-            return false;
-        }
-        return true;
-    }
-
     public Order getOrder(int orderid) {
         Order order = new Order();
 
@@ -125,13 +117,10 @@ public class OrderDAO {
             if (rs.next()) {
                 int id = rs.getInt("orderid");
                 int customerid = rs.getInt("customerid");
-                int bookid = rs.getInt("bookid");
-                int quantity = rs.getInt("quantity");
                 Date orderdate = rs.getDate("orderdate");
-                String orderstatus = rs.getString("orderstatus");
                 double totalprice = rs.getDouble("totalprice");
 
-                order = new Order(id, customerid, bookid, quantity, orderdate, orderstatus, totalprice);
+                order = new Order(id, customerid, orderdate, totalprice);
             }
         } catch (SQLException e) {
             System.out.println("Something went wrong when trying to get a user by id: " + e.getMessage());
@@ -154,13 +143,10 @@ public class OrderDAO {
             while (rs.next()) {
                 int id = rs.getInt("orderid");
                 int customerid = rs.getInt("customerid");
-                int bookid = rs.getInt("bookid");
-                int quantity = rs.getInt("quantity");
                 Date orderdate = rs.getDate("orderdate");
-                String orderstatus = rs.getString("orderstatus");
                 double totalprice = rs.getDouble("totalprice");
 
-                Order order = new Order(id, customerid, bookid, quantity, orderdate, orderstatus, totalprice);
+                Order order = new Order(id, customerid, orderdate, totalprice);
                 orders.add(order);
             }
         } catch (SQLException e) {

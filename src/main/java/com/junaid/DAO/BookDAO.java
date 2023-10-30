@@ -69,6 +69,25 @@ public class BookDAO {
         return true;
     }
 
+    public double getPrice(int isbn) {
+        double price = 0;
+        try {
+            String sqlQuery = "SELECT price FROM Book WHERE isbn = ?";
+            PreparedStatement statement = con.prepareStatement(sqlQuery);
+            statement.setInt(1, isbn);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                price = rs.getDouble("price");
+            }
+        } catch (SQLException e) {
+            System.out.println("Something went wrong when trying to get a book by isbn: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Something went wrong when trying to get a book by isbn: " + e.getMessage());
+        }
+        return price;
+    }
+
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<Book>();
         try {
@@ -130,6 +149,27 @@ public class BookDAO {
             statement.setDouble(4, book.getPrice());
             statement.setInt(5, book.getQuantity());
             statement.setInt(6, book.getIsbn());
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("An existing book was updated successfully!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Something went wrong when trying to update a book: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Something went wrong when trying to update a book: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateBookQuantity(int isbn, int quantity) {
+        try {
+            String sqlQuery = "UPDATE Book SET quantity = ? WHERE isbn = ?";
+            PreparedStatement statement = con.prepareStatement(sqlQuery);
+            statement.setInt(1, quantity);
+            statement.setInt(2, isbn);
             int rowsUpdated = statement.executeUpdate();
 
             if (rowsUpdated > 0) {
