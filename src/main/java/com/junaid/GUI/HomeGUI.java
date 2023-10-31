@@ -64,6 +64,8 @@ public class HomeGUI extends JFrame implements ActionListener {
             placeOrderGUI.setVisible(true);
             dispose();
         } else if (e.getSource() == showOrdersButton) {
+            ShowOrdersGUI showOrdersGUI = new ShowOrdersGUI();
+            showOrdersGUI.setVisible(true);
             dispose();
         }
     }

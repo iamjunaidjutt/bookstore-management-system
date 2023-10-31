@@ -117,8 +117,8 @@ public class OrderDetailsDAO {
 
             while (rs.next()) {
                 OrderDetails orderDetails = new OrderDetails();
-                orderDetails.setOrderDetailsId(rs.getInt("orderdetailsid"));
-                orderDetails.setOrderId(rs.getInt("orderid"));
+                orderDetails.setOrderDetailsId(rs.getInt("orderdetailId"));
+                orderDetails.setOrderId(rs.getInt("orderId"));
                 orderDetails.setIsbn(rs.getInt("isbn"));
                 orderDetails.setQuantity(rs.getInt("quantity"));
                 orderDetailsList.add(orderDetails);
@@ -141,8 +141,8 @@ public class OrderDetailsDAO {
 
             while (rs.next()) {
                 OrderDetails orderDetails = new OrderDetails();
-                orderDetails.setOrderDetailsId(rs.getInt("orderdetailsid"));
-                orderDetails.setOrderId(rs.getInt("orderid"));
+                orderDetails.setOrderDetailsId(rs.getInt("orderdetailId"));
+                orderDetails.setOrderId(rs.getInt("orderId"));
                 orderDetails.setIsbn(rs.getInt("isbn"));
                 orderDetails.setQuantity(rs.getInt("quantity"));
                 orderDetailsList.add(orderDetails);

@@ -47,7 +47,7 @@ public class OrderDAO {
 
     public boolean addOrder(Order order) {
         try {
-            String sqlQuery = "INSERT INTO Order (customerid, totalprice) VALUES (?, ?)";
+            String sqlQuery = "INSERT INTO Orders (customerid, totalprice) VALUES (?, ?)";
             PreparedStatement statement = con.prepareStatement(sqlQuery);
             statement.setInt(1, order.getCustomerID());
             statement.setDouble(2, order.getTotalPrice());
@@ -66,20 +66,23 @@ public class OrderDAO {
         return true;
     }
 
-    public int getMaxOrderId() {
+    public int getOrderId(int customerId, double totalPrice) {
         try {
-            String sql = "SELECT MAX(orderid) FROM Order";
+            String sql = "SELECT orderId FROM Orders WHERE customerId = ? AND totalPrice = ?";
             PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, customerId);
+            statement.setDouble(2, totalPrice);
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("orderid");
+                System.out.println("Order ID in OrderDAO: " + rs.getInt("orderId"));
+                return rs.getInt("orderId");
             }
         } catch (SQLException e) {
-            System.out.println("Something went wrong when trying to get max order id: " + e.getMessage());
+            System.out.println("Something went wrong when trying to get order id: " + e.getMessage());
             return -1;
         } catch (Exception e) {
-            System.out.println("Something went wrong when trying to get max order id: " + e.getMessage());
+            System.out.println("Something went wrong when trying to get order id: " + e.getMessage());
             return -1;
         }
         return -1;
@@ -87,13 +90,34 @@ public class OrderDAO {
 
     public boolean deleteOrder(int orderid) {
         try {
-            String sql = "DELETE FROM Order WHERE orderid = ?";
+            String sql = "DELETE FROM Orders WHERE orderid = ?";
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setInt(1, orderid);
             int rowsDeleted = statement.executeUpdate();
 
             if (rowsDeleted > 0) {
-                System.out.println("A user was deleted successfully!");
+                System.out.println("An order was deleted successfully!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Something went wrong when trying to delete a user: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Something went wrong when trying to delete a user: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteOrder(int customerId, double totalPrice) {
+        try {
+            String sql = "DELETE FROM Orders WHERE customerId = ? AND totalPrice = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, customerId);
+            statement.setDouble(2, totalPrice);
+            int rowsDeleted = statement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("An order was deleted successfully!");
             }
         } catch (SQLException e) {
             System.out.println("Something went wrong when trying to delete a user: " + e.getMessage());
@@ -109,7 +133,7 @@ public class OrderDAO {
         Order order = new Order();
 
         try {
-            String sql = "SELECT * FROM Order WHERE orderid = ?";
+            String sql = "SELECT * FROM Orders WHERE orderid = ?";
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setInt(1, orderid);
             ResultSet rs = statement.executeQuery();
@@ -136,7 +160,7 @@ public class OrderDAO {
         List<Order> orders = new ArrayList<Order>();
 
         try {
-            String sql = "SELECT * FROM Order";
+            String sql = "SELECT * FROM Orders";
             PreparedStatement statement = con.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
 

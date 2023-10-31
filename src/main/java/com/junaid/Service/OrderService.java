@@ -27,7 +27,12 @@ public class OrderService {
             order.setCustomerID(customerId);
             order.setTotalPrice(totalPrice);
             orderDAO.addOrder(order);
-            orderId = orderDAO.getMaxOrderId();
+            orderId = orderDAO.getOrderId(customerId, totalPrice);
+            System.out.println("Order ID: " + orderId);
+            if (orderId == -1) {
+                orderDAO.deleteOrder(customerId, totalPrice);
+                System.out.println("Something went wrong when trying to get the order ID");
+            }
             orderDAO.disconnect();
         }
 
@@ -48,4 +53,17 @@ public class OrderService {
         }
         return true;
     }
+
+    public boolean deleteOrder(int orderId) {
+        if (orderDetailsDAO.connect()) {
+            orderDetailsDAO.deleteOrderDetails(orderId);
+            orderDetailsDAO.disconnect();
+        }
+        if (orderDAO.connect()) {
+            orderDAO.deleteOrder(orderId);
+            orderDAO.disconnect();
+        }
+        return true;
+    }
+
 }
