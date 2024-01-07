@@ -15,11 +15,11 @@ public class BookDAO {
 
     public boolean connect() {
         try {
-            String url = "jdbc:mariadb://localhost:3306/bookmanagement";
-            String username = "admin";
-            String password = "jun4648";
+            String url = "jdbc:mysql://localhost:3306/bookmanagement";
+            String username = "scd_admin";
+            String password = "scd13579";
 
-            Class.forName("org.mariadb.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             System.out.println("Something went wrong when trying to connect to the database: " + e.getMessage());
